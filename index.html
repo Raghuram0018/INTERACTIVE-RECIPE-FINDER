@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Kitchen Assistant</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <!-- Landing Page Section -->
+    <div id="landing-page" class="min-h-screen flex flex-col bg-gray-900 text-gray-100">
+        <header class="w-full text-center py-16 sm:py-24 px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="fade-in-on-load">
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tight">
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-500">
+                            Interactive Recipe Finder
+                        </span>
+                    </h1>
+                </div>
+                <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto opacity-0 fade-in-on-load delay-1">
+                    Don't just find recipes—discover what you can create with the ingredients you already have. Smart, simple, and sustainable cooking starts here.
+                </p>
+                <div class="mt-8 opacity-0 fade-in-on-load delay-2">
+                    <button id="get-started-btn" class="inline-block bg-emerald-500 text-white font-bold text-lg px-8 py-3 rounded-full hover:bg-emerald-600 transition-transform transform hover:scale-105 shadow-lg shadow-emerald-500/20">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <section class="w-full py-12 px-4">
+                <div id="features-carousel-container" class="relative max-w-7xl mx-auto">
+                    <div class="overflow-hidden">
+                        <div id="features-carousel" class="flex transition-transform duration-700 ease-in-out"></div>
+                    </div>
+                    <div id="carousel-dots" class="absolute -bottom-10 left-1/2 -translate-x-1/2 flex space-x-2"></div>
+                </div>
+            </section>
+            <section class="py-24 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-200">
+                    Cooking vibes but make it smart 🔥
+                </h2>
+            </section>
+        </main>
+
+        <footer class="w-full py-16 px-4">
+             <div id="footer-carousel-container" class="relative max-w-7xl mx-auto">
+                <div class="overflow-hidden">
+                    <div id="footer-carousel" class="flex transition-transform duration-700 ease-in-out"></div>
+                </div>
+                 <div id="footer-carousel-dots" class="absolute -bottom-10 left-1/2 -translate-x-1/2 flex space-x-2"></div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main App Section (Initially Hidden) -->
+    <div id="main-app" class="hidden">
+        <!-- Sidebar Menu -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+        <div id="sidebar-menu" class="fixed top-0 left-0 h-full w-72 glass-effect shadow-lg z-50 transform -translate-x-full flex flex-col">
+             <div class="flex items-center justify-between p-4 border-b">
+                <h2 class="text-xl font-bold">Menu</h2>
+                <button id="close-sidebar-btn" class="p-2 rounded-full hover:bg-slate-100">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <nav class="flex-grow p-4 space-y-2">
+                <a href="#history" class="nav-link text-lg font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-3 p-3 rounded-lg" data-page="history"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>History</span></a>
+                <a href="#notifications" class="nav-link text-lg font-semibold text-slate-600 hover:bg-slate-100 relative flex items-center gap-3 p-3 rounded-lg" data-page="notifications">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                    <span>Notifications</span>
+                    <span id="notification-badge-sidebar" class="notification-badge hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t">
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold">Dark Mode</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="bg-white shadow-md sticky top-0 z-30">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <button id="open-sidebar-btn" class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 relative">
+                        <svg class="h-8 w-8 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        <div class="hidden sm:flex items-center">
+                             <svg class="h-10 w-10 text-emerald-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+                             <span class="ml-3 text-xl md:text-2xl font-bold text-slate-800">Kitchen Assistant</span>
+                        </div>
+                        <span id="notification-badge-menu" class="notification-badge hidden" style="top: 0px; right: -5px;">0</span>
+                    </button>
+                    <nav class="hidden md:flex items-center space-x-2">
+                        <a href="#search" class="nav-link desktop-nav text-md font-semibold text-slate-600 hover:bg-slate-100 active flex items-center gap-2" data-page="search"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg><span>Search</span></a>
+                        <a href="#pantry" class="nav-link desktop-nav text-md font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2" data-page="pantry"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg><span>Pantry</span></a>
+                        <a href="#cookbook" class="nav-link desktop-nav text-md font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2" data-page="cookbook"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg><span>Cookbook</span></a>
+                        <a href="#planner" class="nav-link desktop-nav text-md font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2" data-page="planner"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><span>Planner</span></a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-t-lg z-40 border-t border-slate-200">
+             <div class="flex justify-around">
+                <a href="#search" data-page="search" class="nav-link mobile-nav flex-1 pt-2 pb-1 text-center active"><svg class="mx-auto h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg><span class="text-xs">Search</span></a>
+                <a href="#pantry" data-page="pantry" class="nav-link mobile-nav flex-1 pt-2 pb-1 text-center"><svg class="mx-auto h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg><span class="text-xs">Pantry</span></a>
+                <a href="#cookbook" data-page="cookbook" class="nav-link mobile-nav flex-1 pt-2 pb-1 text-center"><svg class="mx-auto h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg><span class="text-xs">Cookbook</span></a>
+                <a href="#planner" data-page="planner" class="nav-link mobile-nav flex-1 pt-2 pb-1 text-center"><svg class="mx-auto h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="text-xs">Planner</span></a>
+            </div>
+        </nav>
+        
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8">
+            <!-- Search Page -->
+            <div id="search-page" class="page active">
+                <div class="max-w-2xl mx-auto">
+                    <h1 class="text-3xl font-bold mb-6">Search Recipes</h1>
+                    <form id="search-form" class="space-y-4 mb-6">
+                        <div class="flex gap-2">
+                            <input id="ingredient-input" type="text" placeholder="e.g., chicken, rice" class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                            <button id="add-ingredient-btn" type="button" class="px-4 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">Add</button>
+                        </div>
+                        <div id="search-tags-container" class="flex flex-wrap gap-2"></div>
+                        <input type="file" id="image-upload" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                        <p id="visual-recognition-status" class="text-sm text-slate-500"></p>
+                        <button type="submit" class="w-full py-3 bg-emerald-500 text-white font-bold rounded-lg hover:bg-emerald-600">Search Recipes</button>
+                    </form>
+                    <div class="space-y-4 mb-6">
+                        <button id="toggle-filters-btn" class="px-4 py-2 bg-slate-200 rounded-lg hover:bg-slate-300 flex items-center gap-2">Filters <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        <div id="filters-panel" class="hidden space-y-4 p-4 bg-slate-50 rounded-lg">
+                            <select id="filter-cuisine" class="w-full p-2 border border-slate-300 rounded"></select>
+                            <select id="filter-diet" class="w-full p-2 border border-slate-300 rounded"></select>
+                            <select id="filter-type" class="w-full p-2 border border-slate-300 rounded"></select>
+                            <input id="filter-time" type="number" placeholder="Max minutes" class="w-full p-2 border border-slate-300 rounded">
+                            <select id="filter-sort" class="w-full p-2 border border-slate-300 rounded"></select>
+                            <button id="clear-filters-btn" class="px-4 py-2 bg-slate-200 rounded hover:bg-slate-300">Clear Filters</button>
+                        </div>
+                        <div id="active-filters-container" class="flex flex-wrap gap-2"></div>
+                    </div>
+                    <div id="pantry-recommendations" class="mb-6"></div>
+                    <div id="search-results"></div>
+                </div>
+            </div>
+
+            <!-- Pantry Page -->
+            <div id="pantry-page" class="page">
+                <div class="max-w-md mx-auto">
+                    <h1 class="text-3xl font-bold mb-6">Pantry</h1>
+                    <form id="pantry-form" class="space-y-4 mb-6">
+                        <div class="flex gap-2">
+                            <input id="pantry-input" type="text" placeholder="Add ingredient to pantry" class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+                            <button type="submit" class="px-4 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">Add</button>
+                        </div>
+                    </form>
+                    <div id="pantry-list"></div>
+                    <div id="pantry-actions"></div>
+                </div>
+            </div>
+
+            <!-- Cookbook Page -->
+            <div id="cookbook-page" class="page">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-3xl font-bold mb-6">Cookbook</h1>
+                    <div class="flex gap-4 mb-6">
+                        <input id="cookbook-search-input" type="text" placeholder="Search saved recipes" class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+                        <button id="cookbook-sort-btn" class="px-6 py-3 bg-slate-200 rounded-lg hover:bg-slate-300">Latest</button>
+                    </div>
+                    <div id="cookbook-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+
+            <!-- Planner Page -->
+            <div id="planner-page" class="page">
+                <div class="max-w-6xl mx-auto">
+                    <h1 class="text-3xl font-bold mb-6">Meal Planner</h1>
+                    <div id="meal-planner-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 mb-6"></div>
+                    <div class="flex gap-4 justify-center">
+                        <button id="generate-shopping-list-btn" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Shopping List</button>
+                        <button id="save-plan-to-history-btn" class="px-6 py-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">Save Plan</button>
+                        <button id="make-event-plan-btn" class="px-6 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">Event Plan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Page -->
+            <div id="history-page" class="page">
+                <div class="max-w-2xl mx-auto">
+                    <h1 class="text-3xl font-bold mb-6">History</h1>
+                    <div class="flex gap-4 mb-6">
+                        <input id="history-search-input" type="text" placeholder="Search history" class="flex-1 p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500">
+                        <select id="history-filter-select" class="p-3 border border-slate-300 rounded-lg">
+                            <option value="all">All</option>
+                            <option value="search">Searches</option>
+                            <option value="shoppinglist">Shopping Lists</option>
+                            <option value="weeklyplan">Plans</option>
+                            <option value="eventplan">Events</option>
+                        </select>
+                    </div>
+                    <div id="history-list"></div>
+                </div>
+            </div>
+
+            <!-- Notifications Page -->
+            <div id="notifications-page" class="page">
+                <div class="max-w-md mx-auto">
+                    <h1 class="text-3xl font-bold mb-6">Notifications</h1>
+                    <div id="notifications-list"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="loading-modal" class="modal-hidden fixed inset-0 z-[60] justify-center items-center p-4 glass-effect"></div>
+    <div id="recipe-modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-75 z-50 justify-center items-start pt-10 pb-10 overflow-y-auto"></div>
+    <div id="shopping-list-modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-75 z-50 justify-center items-center"></div>
+    <div id="event-modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-75 z-50 justify-center items-start pt-10 pb-10 overflow-y-auto"></div>
+    <div id="add-recipe-modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-75 z-50 justify-center items-start pt-10 pb-10 overflow-y-auto"></div>
+    <div id="popup-modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-75 z-50 justify-center items-center p-4"></div>
+
+    <!-- Feedback Toast Container -->
+    <div id="feedback-container" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 space-y-2 w-full max-w-xs px-4"></div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
