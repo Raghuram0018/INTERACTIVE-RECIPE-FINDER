@@ -121,8 +121,18 @@ html.dark .recipe-card-draggable:hover, html.dark .card-hover-effect:hover { box
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .animate-fadeIn { animation: fadeIn 0.5s ease-out; }
 .filters-panel.open { display: block !important; }
-#filters-panel { transition: max-height 0.3s ease; overflow: hidden; max-height: 0; }
-#filters-panel.open { max-height: 500px; }
+/* --- Filters Panel Visibility Fix --- */
+#filters-panel {
+  display: none;
+  transition: max-height 0.3s ease;
+  overflow: hidden;
+  max-height: 0;
+}
+#filters-panel.open {
+  display: block;
+  max-height: 500px;
+}
 .rotate-180 { transform: rotate(180deg); }
 .checked { text-decoration: line-through; opacity: 0.6; }
 .shopping-list-item input:checked + span { text-decoration: line-through; opacity: 0.6; }
+
