@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const API_KEY = ''; // <-- PASTE YOUR SPOONACULAR API KEY HERE (sign up free at https://spoonacular.com/food-api/console)
+    const API_KEY = 'a15b238e02034e66b026cba4625d10bc'; // <-- PASTE YOUR SPOONACULAR API KEY HERE (sign up free at https://spoonacular.com/food-api/console)
 
     // --- GLOBAL STATE ---
     let pantry = JSON.parse(localStorage.getItem('pantry')) || [];
